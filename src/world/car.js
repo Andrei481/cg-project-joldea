@@ -4,8 +4,6 @@ import * as CANNON from 'cannon-es';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
-import copy from "copy-to-clipboard";
-import GenerateCode from "./generateCode";
 
 export class Car {
     constructor(scene, world, gui, loadingManager) {
@@ -414,14 +412,6 @@ export class Car {
         this.gui.Register({folder: 'Secondary Keys Controls', object: this.controlOptions.secondaryKeys, property: 'brake', type: 'select', label: 'Apply Brakes', options: controllableKeysArray})
         this.gui.Register({folder: 'Secondary Keys Controls', object: this.controlOptions.secondaryKeys, property: 'reset', type: 'select', label: 'Reset Car Position', options: controllableKeysArray})
 
-        this.gui.Register({folder: 'Generate Code', type: 'button', label: 'Copy to clipboard', action: () => {
-            const generateCode = new GenerateCode(this);
-            copy(generateCode.generateCAR());
-        }})
-        this.gui.Register({folder: 'Generate Code', type: 'button', label: 'Save as ZIP', action: () => {
-            const generateCode = new GenerateCode(this);
-            generateCode.generateCode();
-        }})
     }
 
     update() {

@@ -19,11 +19,9 @@ document.body.appendChild( stats.dom );
  */
 // Canvas
 const gui = new Guify({align: 'right', theme: 'dark', width: '400px', barMode: 'none'})
-gui.Register({type: 'folder', label: 'Upload', open: true})
 gui.Register({type: 'folder', label: 'Vehicle', open: true})
 gui.Register({type: 'folder', label: 'Chassis', open: true})
 gui.Register({type: 'folder', label: 'Wheels', open: true})
-gui.Register({type: 'folder', label: 'Generate Code', open: true})
 
 gui.Register({folder: 'Chassis', type: 'folder', label: 'Chassis Helper', open: true})
 gui.Register({folder: 'Chassis', type: 'folder', label: 'Chassis Model', open: true})
@@ -90,6 +88,10 @@ const cubeEnvironmentMapTexture = cubeTextureLoader.load([
     "/textures/environmentMaps/2/pz.jpg",
     "/textures/environmentMaps/2/nz.jpg",
 ])
+const textureLoader = new THREE.TextureLoader();
+const backgroundTexture = textureLoader.load('nightsky.png');
+scene.background = backgroundTexture;
+
 // scene.background = cubeEnvironmentMapTexture
 scene.environment = cubeEnvironmentMapTexture
 
@@ -183,6 +185,31 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const timeStep = 1 / 60 // seconds
 let lastCallTime
 
+const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff];
+// Create an array to hold the cubes
+const cubes = [];
+
+// Loop through 50 times to create 50 cubes
+for (let i = 0; i < 150; i++) {
+  // Create a new cube
+  const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+  const cubeMaterial = new THREE.MeshLambertMaterial({ 
+    color: colors[Math.floor(Math.random() * colors.length)],
+    transparent: true,
+    opacity: 0.5
+    });
+  const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+  // Set the position of the cube randomly within a range
+  cube.position.x = Math.random() * 20 - 10;
+  cube.position.y = Math.random() * 40 + 1;
+  cube.position.z = Math.random() * 20 - 10;
+  scene.add(cube);
+
+  // Add the cube to the array of cubes
+  cubes.push(cube);
+}
+
+
 const tick = () =>
 {
     stats.begin();
@@ -197,7 +224,10 @@ const tick = () =>
         world.step(timeStep, dt)
     }
     lastCallTime = time
-
+    cubes.forEach((cube) => {
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.02;
+      });
     // Render
     renderer.render(scene, camera)
     stats.end();
