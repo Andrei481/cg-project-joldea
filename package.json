@@ -1,8 +1,11 @@
 {
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "webpack --config ./bundler/webpack.prod.js",
     "start": "webpack serve --config ./bundler/webpack.dev.js"
   },
+  "homepage": "http://andrei481.github.io/cg-project-joldea",
   "dependencies": {
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.12.11",
@@ -32,5 +35,9 @@
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3"
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0",
+    "s": "^1.0.0"
   }
 }
